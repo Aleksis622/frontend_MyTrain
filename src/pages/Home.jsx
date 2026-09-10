@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { all as getTrips } from "../api/trips"; // IMPORTANT: trips, not trains
+import { all as getTrips } from "../api/trips";
+import "./Home.css";
 
 function Home() {
   const { t } = useTranslation();
@@ -9,11 +10,8 @@ function Home() {
   useEffect(() => {
     getTrips().then(res => {
       console.log("API RESPONSE:", res.data);
+      const list = Array.isArray(res.data) ? res.data : res.data.data;
 
-      // Laravel pagination → actual data is inside res.data.data
-      const list = res.data.data || [];
-
-      // Show only first 5 trips on main page
       setTrips(list.slice(0, 5));
     });
   }, []);
@@ -23,28 +21,34 @@ function Home() {
       <h1>{t("home.welcome")}</h1>
       <p>{t("home.welcome_sub")}</p>
 
-      <h2 style={{ marginTop: "2rem" }}>{t("home.next_trains")}</h2>
+      <h2 className="train-list-title">{t("home.next_trains")}</h2>
 
-      <div className="train-preview">
+      <div className="train-list-container">
         {trips.length === 0 && (
           <p style={{ opacity: 0.7 }}>{t("home.no_trains")}</p>
         )}
 
         {trips.map(trip => (
-          <div key={trip.trip_id} className="train-card">
-            <h3>{trip.trip_headsign || "Unknown Train"}</h3>
+          <div key={trip.trip_id} className="train-item">
+            <div className="train-left">
+              <div className="train-name">
+                {trip.trip_headsign || "Unknown Train"}
+              </div>
 
-            <p>
-              {t("trains.route")}: {trip.route_id}
-            </p>
+              <div className="train-route">
+                {t("trains.route")}: {trip.route_id}
+              </div>
+            </div>
 
-            <p>
-              {t("trains.service")}: {trip.service_id}
-            </p>
+            <div className="train-right">
+              <div className="train-time">
+                {t("trains.direction")}: {trip.direction_id}
+              </div>
 
-            <p>
-              {t("trains.direction")}: {trip.direction_id}
-            </p>
+              <div className="train-status">
+                {t("trains.service")}: {trip.service_id}
+              </div>
+            </div>
           </div>
         ))}
       </div>
