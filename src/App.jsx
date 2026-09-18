@@ -11,24 +11,31 @@ import RoutesPage from "./pages/Routes";
 import Map from "./pages/Map";
 import Profile from "./pages/Profile";
 
+import { AuthProvider } from "./context/Auth";
+import { LangProvider } from "./context/Lang";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
+    <AuthProvider>
+      <LangProvider>
+        <BrowserRouter>
+          <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/trains" element={<Trains />} />
-        <Route path="/tickets" element={<Tickets />} />
-        <Route path="/journeys" element={<Journeys />} />
-        <Route path="/stops" element={<Stops />} />
-        <Route path="/routes" element={<RoutesPage />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/trains" element={<Trains />} />
+            <Route path="/tickets" element={<Tickets />} />
+            <Route path="/journeys" element={<Journeys />} />
+            <Route path="/stops" element={<Stops />} />
+            <Route path="/routes" element={<RoutesPage />} />
+            <Route path="/map" element={<Map />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
 
-      <Footer />
-    </BrowserRouter>
+          <Footer />
+        </BrowserRouter>
+      </LangProvider>
+    </AuthProvider>
   );
 }
 
