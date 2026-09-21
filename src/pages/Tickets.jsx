@@ -16,6 +16,12 @@ function Tickets() {
       setTickets(list);
     });
   }, []);
+<button
+  className="btn"
+  onClick={() => navigate(`/payment/${ticket.id}`)}
+>
+  Pay Now
+</button>
 
   return (
     <div className="tickets-page">
@@ -56,6 +62,7 @@ function Tickets() {
       </div>
     </div>
   );
+  
 }
 
 export default Tickets;

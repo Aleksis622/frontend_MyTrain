@@ -1,13 +1,14 @@
 import api from "./api";
 
-export const login = (email, password) => {
-  return api.post("/login", { email, password });
-};
+export const login = (email, password) =>
+  api.post("/login", { email, password });
 
-export const logout = () => {
-  return api.post("/logout");
-};
+export const register = (name, email, password) =>
+  api.post("/register", { name, email, password });
 
-export const me = () => {
-  return api.get("/user");
-};
+export const logout = () =>
+  api.post("/logout");
+
+export const me = () =>
+  api.get("/user");
+

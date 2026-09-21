@@ -11,6 +11,14 @@ import RoutesPage from "./pages/Routes";
 import Map from "./pages/Map";
 import Profile from "./pages/Profile";
 
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import Payment from "./pages/Payment";
+import FakeProvider from "./pages/FakeProvider";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
+
 import { AuthProvider } from "./context/Auth";
 import { LangProvider } from "./context/Lang";
 
@@ -30,6 +38,16 @@ function App() {
             <Route path="/routes" element={<RoutesPage />} />
             <Route path="/map" element={<Map />} />
             <Route path="/profile" element={<Profile />} />
+
+            
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            
+            <Route path="/payment/:ticketId" element={<Payment />} />
+            <Route path="/payment/:paymentId/provider" element={<FakeProvider />} />
+            <Route path="/payment/:paymentId/success" element={<PaymentSuccess />} />
+            <Route path="/payment/:paymentId/failed" element={<PaymentFailed />} />
           </Routes>
 
           <Footer />

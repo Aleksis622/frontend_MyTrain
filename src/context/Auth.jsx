@@ -1,13 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { me, login as apiLogin, logout as apiLogout } from "../api/auth";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user on app start
   useEffect(() => {
     me()
       .then(res => setUser(res.data))

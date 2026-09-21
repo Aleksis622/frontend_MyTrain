@@ -1,53 +1,47 @@
-import { useEffect, useState } from "react";
+import { useAuth } from "../context/Auth";
 import { useTranslation } from "react-i18next";
-import { me, logout } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 import "./home.css";
 
 function Profile() {
   const { t } = useTranslation();
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    me()
-      .then(res => {
-        setUser(res.data);
-      })
-      .catch(() => {
-        setUser(null);
-      });
-  }, []);
-
-  const handleLogout = () => {
-    logout().then(() => {
-      window.location.href = "/";
-    });
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
+
+  if (!user) {
+    return (
+      <div className="profile-page">
+        <h1>{t("profile.title")}</h1>
+
+        <p style={{ opacity: 0.7 }}>{t("profile.not_logged_in")}</p>
+
+        <div className="profile-card">
+          <a className="btn" href="/login">{t("profile.login")}</a>
+          <a className="btn" href="/register">{t("profile.register")}</a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-page">
       <h1>{t("profile.title")}</h1>
 
-      {!user && (
-        <p style={{ opacity: 0.7 }}>{t("profile.not_logged_in")}</p>
-      )}
+      <div className="profile-card">
+        <h3>{t("profile.info")}</h3>
 
-      {user && (
-        <div className="profile-card">
-          <h3>{t("profile.info")}</h3>
+        <p><strong>{t("profile.name")}:</strong> {user.name}</p>
+        <p><strong>{t("profile.email")}:</strong> {user.email}</p>
 
-          <p>
-            <strong>{t("profile.name")}:</strong> {user.name}
-          </p>
-
-          <p>
-            <strong>{t("profile.email")}:</strong> {user.email}
-          </p>
-
-          <button className="btn" onClick={handleLogout}>
-            {t("profile.logout")}
-          </button>
-        </div>
-      )}
+        <button className="btn" onClick={handleLogout}>
+          {t("profile.logout")}
+        </button>
+      </div>
     </div>
   );
 }
