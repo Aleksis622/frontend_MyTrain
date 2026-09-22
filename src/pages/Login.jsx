@@ -12,9 +12,11 @@ function Login() {
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
+    setError(""); 
+
     try {
-      await login(email, password);
-      navigate("/profile");
+      await login(email, password);   
+      navigate("/profile");           
     } catch (err) {
       setError("Invalid email or password");
     }

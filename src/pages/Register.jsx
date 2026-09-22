@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { register } from "../api/auth";
 import { useAuth } from "../context/Auth";
-import { register as apiRegister } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 function Register() {
-  const { setUser } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -14,12 +14,18 @@ function Register() {
   const [error, setError] = useState("");
 
   const handleRegister = async () => {
+    setError("");
+
     try {
-      const res = await apiRegister(name, email, password);
-      setUser(res.data.user);
+      
+      await register(name, email, password);
+
+      
+      await login(email, password);
+
       navigate("/profile");
     } catch (err) {
-      setError("Registration failed");
+      setError("Registration failed. Check your details.");
     }
   };
 
@@ -50,7 +56,7 @@ function Register() {
         onChange={e => setPassword(e.target.value)}
       />
 
-      <button onClick={handleRegister}>Create Account</button>
+      <button onClick={handleRegister}>Register</button>
 
       <p>
         Already have an account? <a href="/login">Login</a>

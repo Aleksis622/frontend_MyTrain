@@ -10,5 +10,4 @@ export const logout = () =>
   api.post("/logout");
 
 export const me = () =>
-  api.get("/user");
-
+  api.get("/user").catch(() => ({ data: null }));

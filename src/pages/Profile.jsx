@@ -1,45 +1,48 @@
 import { useAuth } from "../context/Auth";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import "./home.css";
+import { useEffect } from "react";
+import "./Profile.css";
 
 function Profile() {
-  const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [loading, user, navigate]);
+
+  if (loading) {
+    return <div className="profile-page"><p>Loading...</p></div>;
+  }
+
+  if (!user) {
+    return null; 
+  }
 
   const handleLogout = async () => {
     await logout();
     navigate("/login");
   };
 
-  if (!user) {
-    return (
-      <div className="profile-page">
-        <h1>{t("profile.title")}</h1>
-
-        <p style={{ opacity: 0.7 }}>{t("profile.not_logged_in")}</p>
-
-        <div className="profile-card">
-          <a className="btn" href="/login">{t("profile.login")}</a>
-          <a className="btn" href="/register">{t("profile.register")}</a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="profile-page">
-      <h1>{t("profile.title")}</h1>
+      <h1>Profile</h1>
 
       <div className="profile-card">
-        <h3>{t("profile.info")}</h3>
+        <h3>Your Information</h3>
 
-        <p><strong>{t("profile.name")}:</strong> {user.name}</p>
-        <p><strong>{t("profile.email")}:</strong> {user.email}</p>
+        <p>
+          <strong>Name:</strong> {user.name}
+        </p>
+
+        <p>
+          <strong>Email:</strong> {user.email}
+        </p>
 
         <button className="btn" onClick={handleLogout}>
-          {t("profile.logout")}
+          Logout
         </button>
       </div>
     </div>
